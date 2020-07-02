@@ -1,0 +1,18 @@
+package com.bugados.backend.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.bugados.backend.model.Transacao;
+
+
+public interface TransacaoDAO extends CrudRepository<Transacao, Integer> {
+	
+	
+	
+    @Query("SELECT t FROM mtb310_transaction t WHERE ag_financeiro = :agFinanceiro")
+	public ArrayList<Transacao> findAllByAgFinanceiro(int agFinanceiro);
+
+}

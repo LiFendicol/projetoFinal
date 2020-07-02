@@ -1,0 +1,43 @@
+package com.bugados.backend.controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bugados.backend.dao.TransacaoDAO;
+import com.bugados.backend.model.Agente;
+import com.bugados.backend.model.Transacao;
+
+
+@CrossOrigin(origins = "*")
+@RestController
+public class TransacaoController {
+	@Autowired //injeção da dependência - não precisa implementar pois o framework cria
+	private TransacaoDAO dao;
+	
+	@GetMapping("/transacoes")
+	public ArrayList<Transacao> listarTudo(){
+		ArrayList<Transacao> lista = (ArrayList<Transacao>) dao.findAll();
+		
+		return lista;
+	}
+	
+	@PostMapping("/transacoesagente")
+	public ResponseEntity<ArrayList<Transacao>> login(@RequestBody Agente ag_financeiro) {
+		ArrayList<Transacao> listaAg = (ArrayList<Transacao>) dao.findByAgFinanceiro(ag_financeiro.getIdAgente());
+		if(listaAg != null) {
+			return ResponseEntity.ok(listaAg);
+		}else {
+			return ResponseEntity.notFound().build();
+
+		}
+	}
+}
+
+
